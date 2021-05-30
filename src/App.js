@@ -1,11 +1,14 @@
 import React from 'react';
-import {StatusBar} from 'react-native';
-import Login from './pages/Login';
+import Rotas from './Rotas';
+import {Provider} from 'react-redux';
+
+import store from './store';
 
 export default App = () => {
+
   return (
-    <>
-      <Login />
-    </>
+    <Provider store={store}>
+      <Rotas />
+    </Provider>
   );
 };

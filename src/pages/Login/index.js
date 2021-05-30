@@ -1,12 +1,55 @@
-import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {useDispatch, useSelector} from 'react-redux';
 
+import api from '../../services/api';
 import style from './style';
 import InputLogin from '../../components/InputLogin';
 import Background from '../../components/Background';
 
 export default Login = () => {
+  const [user, setUser] = useState('vinicius.freitas');
+  const [password, setPassword] = useState('123456');
+  const dispatch = useDispatch();
+  // const logado = useSelector(state => state.user);
+
+  const handleLogin = async () => {
+    dispatch({type: 'LOADING_MODAL', payload: true});
+
+    await api
+      .post('/login', {
+        usuario: user,
+        senha: password,
+      })
+      .then(response => {
+        const {login, senha, nome, nivel_de_acesso} = response.data.user;
+        if (user) {
+          dispatch({type: 'LOADING_MODAL', payload: false});
+          // dispatch({
+          //   type: 'LOGIN',
+          //   payload: {
+          //     login: login,
+          //     senha: senha,
+          //     nome: nome,
+          //     nivel_de_acesso: nivel_de_acesso,
+          //   },
+          // });
+        } else {
+          dispatch({type: 'LOADING_MODAL', payload: false});
+          dispatch({
+            type: 'ERROR_MODAL',
+            payload: {show: true, message: 'Usuário ou senha inválidas.'},
+          });
+        }
+      })
+      .catch(error => {
+        Alert.alert('Erro', error.message);
+      });
+
+    // console.log(logado);
+  };
+
   return (
     <Background>
       <View style={style.Container}>
@@ -14,10 +57,13 @@ export default Login = () => {
           Invent Logo
         </Text>
         <View style style={{padding: 50}}>
-          <InputLogin iconName={'user'} />
-          <InputLogin iconName={'lock'} password={true} />
-          <TouchableOpacity
-            style={style.Button}>
+          <InputLogin iconName={'user'} onChangeText={setUser} />
+          <InputLogin
+            iconName={'lock'}
+            password={true}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity style={style.Button} onPress={handleLogin}>
             <Icon
               name="login"
               size={25}

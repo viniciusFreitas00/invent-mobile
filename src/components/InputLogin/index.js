@@ -4,10 +4,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import style from './style';
 
-export default InputLogin = ({iconName, password = false}) => {
+export default InputLogin = ({iconName, password = false, onChangeText}) => {
   return (
     <View style={style.Content}>
-      {/* <Icon></Icon> */}
       <Icon
         name={iconName}
         size={25}
@@ -17,6 +16,7 @@ export default InputLogin = ({iconName, password = false}) => {
         style={style.Input}
         selectionColor={'#A9A9A9'}
         secureTextEntry={password}
+        onChangeText={onChangeText}
       />
     </View>
   );
