@@ -11,7 +11,7 @@ export default Home = () => {
       <Button
         title="dskdsjdksjdksds"
         onPress={() => {
-          dispatch({type: 'ERROR_MODAL', payload: {show: false, message: ''}});
+          dispatch({type: 'LOGOUT'});
         }}></Button>
     </View>
   );

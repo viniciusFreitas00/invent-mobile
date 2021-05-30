@@ -22,6 +22,8 @@ export default StyleSheet.create({
     borderRadius: 50,
     position: 'absolute',
     top: -50,
+    justifyContent: "center",
+    alignItems: "center"
   },
   Button: {
     paddingVertical: 10,

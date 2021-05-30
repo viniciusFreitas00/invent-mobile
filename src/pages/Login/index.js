@@ -23,31 +23,34 @@ export default Login = () => {
         senha: password,
       })
       .then(response => {
-        const {login, senha, nome, nivel_de_acesso} = response.data.user;
-        if (user) {
-          dispatch({type: 'LOADING_MODAL', payload: false});
-          // dispatch({
-          //   type: 'LOGIN',
-          //   payload: {
-          //     login: login,
-          //     senha: senha,
-          //     nome: nome,
-          //     nivel_de_acesso: nivel_de_acesso,
-          //   },
-          // });
-        } else {
-          dispatch({type: 'LOADING_MODAL', payload: false});
-          dispatch({
-            type: 'ERROR_MODAL',
-            payload: {show: true, message: 'Usuário ou senha inválidas.'},
-          });
-        }
+        handleLoginResponse(response.data.user);
       })
       .catch(error => {
         Alert.alert('Erro', error.message);
       });
 
     // console.log(logado);
+  };
+
+  const handleLoginResponse = ({login, senha, nome, nivel_de_acesso}) => {
+    if (login) {
+      dispatch({type: 'LOADING_MODAL', payload: false});
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          login: login,
+          senha: senha,
+          nome: nome,
+          nivel_de_acesso: nivel_de_acesso,
+        },
+      });
+    } else {
+      dispatch({type: 'LOADING_MODAL', payload: false});
+      dispatch({
+        type: 'ERROR_MODAL',
+        payload: {show: true, message: 'Usuário ou senha inválidas.'},
+      });
+    }
   };
 
   return (

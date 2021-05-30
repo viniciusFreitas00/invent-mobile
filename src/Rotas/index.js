@@ -6,7 +6,7 @@ import Home from '../pages/Home';
 import Modals from '../components/Moldals';
 
 export default Rotas = ({children}) => {
-  // const login = useSelector(state => state.user);
+  const {login} = useSelector(state => state.user);
 
   // useEffect(() => {
   //   console.log(login);
@@ -14,7 +14,7 @@ export default Rotas = ({children}) => {
 
   return (
     <>
-      {false ? <Home /> : <Login />}
+      {!!login ? <Home /> : <Login />}
       <Modals />
     </>
   );

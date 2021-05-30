@@ -9,15 +9,14 @@ const INITIAL_STATE = {
   },
   errorModal: {
     show: false,
-    message: 'Usuario ou senha inválida.',
+    message: '',
   },
-  loadingModal: false
+  loadingModal: false,
 };
 
 const Store = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case 'LOGIN':
-      console.log(action)
       return {...state, user: action.payload};
     case 'LOGOUT':
       return {...state, user: INITIAL_STATE.user};
