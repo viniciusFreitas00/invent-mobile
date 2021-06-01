@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, TouchableOpacity, Alert, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -56,8 +56,8 @@ export default Login = () => {
   return (
     <Background>
       <View style={style.Container}>
-        <Text style={{color: '#fff', textAlign: 'center', fontSize: 20}}>
-          Invent Logo
+        <Text style={{color: '#808080', textAlign: 'center', fontSize: 30}}>
+          INVENT
         </Text>
         <View style style={{padding: 50}}>
           <InputLogin iconName={'user'} onChangeText={setUser} />
