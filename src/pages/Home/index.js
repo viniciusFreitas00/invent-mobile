@@ -1,14 +1,12 @@
-import React, {useRef, useCallback} from 'react';
-import {
-  Image,
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Alert,
-} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {View, Text, TouchableOpacity, FlatList, Alert} from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
+import MIcon from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch, useSelector} from 'react-redux';
 
 import Background from '../../components/Background';
+import CadastrarEntrada from '../../components/CadastrarEntrada';
+import style from './style';
 
 const teste = [
   {id: 1, nome: 'tesdmajskd', dataEntrada: '21/05/2020 10:26'},
@@ -22,41 +20,56 @@ const teste = [
 ];
 
 export default function SingUp() {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+  const [modalRegister, setModalRegister] = useState(false);
+  // setModalRegister((state) => !state)
+
+  const logout = useCallback(() => {
+    dispatch({type: 'LOGOUT', payload: false});
+  }, []);
+
+  const handleModalState = useCallback(() => {
+    setModalRegister(state => !state);
+  }, []);
+
   const handleSaida = useCallback(({nome, id}) => {
     Alert.alert('Saida', `Desaja cadastrar a saida do: ${nome}`);
   }, []);
+
   return (
     <Background>
-      <View
-        style={{marginTop: 50, paddingHorizontal: 30, flexDirection: 'row'}}>
-        <View
-          style={{
-            backgroundColor: '#fff',
-            width: 100,
-            height: 100,
-            borderRadius: 100,
-          }}
-        />
+      <View style={style.Header}>
+        <View style={style.User}>
+          <MIcon name="face" size={60} color="#363636" />
+        </View>
         <View style={{marginLeft: 20, alignSelf: 'center'}}>
-          <Text style={{color: '#fff', marginBottom: 2}}>vinicius.freitas</Text>
-          <Text style={{color: '#fff', marginBottom: 5}}>Vincius Freire de Freitas</Text>
-          <TouchableOpacity><Text>Log out</Text></TouchableOpacity>
+          <Text style={style.HeaderDefautText}>{user.login}</Text>
+          <Text style={style.HeaderDefautText}>{user.nome}</Text>
+          <TouchableOpacity
+            style={{flexDirection: 'row', marginTop: 5}}
+            onPress={logout}>
+            <Icon name="logout" color="#fff" size={25} />
+            <Text style={{color: '#fff', marginLeft: 5, fontSize: 15}}>
+              Log out
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
-      <View style={{flex: 1, marginTop: 50}}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#dadada',
-            alignSelf: 'center',
-            paddingHorizontal: 30,
-            paddingVertical: 20,
-            borderRadius: 5,
-          }}>
+      <View style={style.Body}>
+        <TouchableOpacity style={style.Button} onPress={handleModalState}>
           <Text>Cadastrar entrada</Text>
         </TouchableOpacity>
         <FlatList
-          style={{marginTop: 40}}
+          style={{marginTop: 10}}
           data={teste}
+          ListHeaderComponent={() => (
+            <View style={{alignItems: 'center', padding: 20}}>
+              <Text style={{color: '#fff'}}>
+                Pessoas no mercado: {teste.length}
+              </Text>
+            </View>
+          )}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item, index}) => {
             return (
@@ -78,8 +91,10 @@ export default function SingUp() {
               </TouchableOpacity>
             );
           }}
+          ListFooterComponent={() => <View style={{marginBottom: 20}} />}
         />
       </View>
+      <CadastrarEntrada visible={modalRegister} setVisible={handleModalState}/>
     </Background>
   );
 }
