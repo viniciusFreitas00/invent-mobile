@@ -6,21 +6,23 @@ import {useDispatch, useSelector} from 'react-redux';
 import style from './style';
 
 export default Error = () => {
-  const error = useSelector(state => state.errorModal);
+  const success = useSelector(state => state.successModal);
   const dispatch = useDispatch();
 
   const close = () => {
-    dispatch({type: 'ERROR_MODAL', payload: {show: false, message: ''}});
+    dispatch({type: 'SUCCESS_MODAL', payload: {show: false, message: ''}});
   };
 
   return (
-    <Modal transparent={true} visible={error.show} animationType={'slide'}>
+    <Modal transparent={true} visible={success.show} animationType={'slide'}>
       <View style={style.Container}>
         <View style={style.Card}>
           <View style={style.Icon}>
-            <Icon name="closecircleo" color="#fff" size={60}></Icon>
+            <Icon name="checkcircleo" color="#fff" size={60}></Icon>
           </View>
-          <Text style={{color: '#fff', textAlign: "center"}}>{error.message}</Text>
+          <Text style={{color: '#fff', textAlign: 'center'}}>
+            {success.message}
+          </Text>
           <TouchableOpacity style={style.Button} onPress={close}>
             <Text style={{color: '#fff'}}>OK</Text>
           </TouchableOpacity>

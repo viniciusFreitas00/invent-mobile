@@ -17,21 +17,21 @@ export default StyleSheet.create({
     paddingHorizontal: 2,
   },
   Icon: {
-    backgroundColor: '#ff0000',
+    backgroundColor: '#00FF00',
     width: 100,
     height: 100,
     borderRadius: 50,
     position: 'absolute',
     top: -50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center"
   },
   Button: {
     paddingVertical: 10,
     paddingHorizontal: 30,
-    backgroundColor: '#FF0000',
+    backgroundColor: '#00FF00',
     marginBottom: 20,
     marginTop: 5,
-    borderRadius: 3,
+    borderRadius: 3
   },
 });

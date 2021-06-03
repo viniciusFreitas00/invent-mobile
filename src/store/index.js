@@ -12,6 +12,10 @@ const INITIAL_STATE = {
     message: '',
   },
   loadingModal: false,
+  successModal: {
+    show: false,
+    message: '',
+  },
 };
 
 const Store = (state = INITIAL_STATE, action) => {
@@ -24,6 +28,8 @@ const Store = (state = INITIAL_STATE, action) => {
       return {...state, errorModal: action.payload};
     case 'LOADING_MODAL':
       return {...state, loadingModal: action.payload};
+    case 'SUCCESS_MODAL':
+      return {...state, successModal: action.payload};
     default:
       return {...state};
   }
