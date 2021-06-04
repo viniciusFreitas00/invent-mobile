@@ -13,7 +13,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import style from './style';
 import api from '../../services/api';
 
-export default CadastrarEntrada = ({visible, setVisible}) => {
+export default CadastrarEntrada = ({visible, setVisible, carregandoTela}) => {
   const dispatch = useDispatch();
   const [identificador, setIdentificador] = useState('');
 
@@ -68,6 +68,7 @@ export default CadastrarEntrada = ({visible, setVisible}) => {
         payload: {show: true, message: 'Entrada cadastrada com sucesso.'},
       });
       setVisible();
+      carregandoTela();
     }
   };
   return (

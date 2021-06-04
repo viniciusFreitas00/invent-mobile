@@ -1,36 +1,24 @@
-import React, {useCallback, useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Alert,
-  ScrollView,
-} from 'react-native';
+import React, {useCallback, useState, useEffect} from 'react';
+import {View, Text, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
 
 import Background from '../../components/Background';
 import CadastrarEntrada from '../../components/CadastrarEntrada';
+import api from '../../services/api';
 import style from './style';
-
-const fila = [
-  {id: 1, nome: 'tesdmajskd', dataEntrada: '21/05/2020 10:26'},
-  {id: 2, nome: 'tesdmajskd asdij', dataEntrada: '21/05/2020 10:26'},
-  {id: 3, nome: 'tesdmajskd as', dataEntrada: '21/05/2020 10:26'},
-  {id: 3, nome: 'tesdmajskd asd', dataEntrada: '21/05/2020 10:26'},
-  {id: 4, nome: 'tesdmajskd kajda', dataEntrada: '21/05/2020 10:26'},
-  {id: 5, nome: 'tesdmajskd kajda', dataEntrada: '21/05/2020 10:26'},
-  {id: 6, nome: 'tesdmajskd kajda', dataEntrada: '21/05/2020 10:26'},
-  {id: 7, nome: 'tesdmajskd kajda', dataEntrada: '21/05/2020 10:26'},
-];
 
 export default function SingUp() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const [modalRegister, setModalRegister] = useState(false);
-  // setModalRegister((state) => !state)
+  const [fila, setFila] = useState([{}]);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    carregandoTela();
+  }, []);
 
   const logout = useCallback(() => {
     dispatch({type: 'LOGOUT', payload: false});
@@ -40,9 +28,45 @@ export default function SingUp() {
     setModalRegister(state => !state);
   }, []);
 
-  const handleSaida = useCallback(({nome, id}) => {
-    Alert.alert('Saida', `Desaja cadastrar a saida do: ${nome}`);
+  const handleSaida = useCallback(({identificador, id_acesso}) => {
+    Alert.alert('Saida', `Desaja cadastrar a saida do: ${identificador}`, [
+      {text: 'Não'},
+      {text: 'Sim', onPress: () => cadastrarSaida(id_acesso)},
+    ]);
   }, []);
+
+  const cadastrarSaida = async (id_acesso) => {
+    await api
+      .post('/adicionaSaida', {
+        id_acesso: id_acesso,
+      })
+      .then(response => {
+        carregandoTela();
+      })
+      .catch(error => {
+        Alert.alert('Erro', error.message);
+      });
+  };
+
+  const carregandoTela = () => {
+    setCarregando(true);
+    dispatch({type: 'LOADING_MODAL', payload: true});
+    getDadosFila();
+  };
+
+  const getDadosFila = async () => {
+    await api
+      .get('/retornaPessoas', {})
+      .then(response => {
+        setFila(response.data.retorno);
+        setCarregando(false);
+        dispatch({type: 'LOADING_MODAL', payload: false});
+      })
+      .catch(error => {
+        Alert.alert('Erro', error.message);
+        dispatch({type: 'LOADING_MODAL', payload: false});
+      });
+  };
 
   return (
     <Background>
@@ -68,38 +92,43 @@ export default function SingUp() {
           <TouchableOpacity style={style.Button} onPress={handleModalState}>
             <Text>Cadastrar entrada</Text>
           </TouchableOpacity>
-          <View style={{marginVertical: 20}}>
-          <View style={{alignItems: 'center', padding: 20}}>
+          {!carregando && (
+            <View style={{marginVertical: 20}}>
+              <View style={{alignItems: 'center', padding: 20}}>
                 <Text style={{color: '#fff'}}>
                   Pessoas no mercado: {fila.length}
                 </Text>
               </View>
-            {fila.map((item, index) => {
-              return (
-                <TouchableOpacity
-                  key={index.toString()}
-                  onPress={() => handleSaida(item)}
-                  style={{
-                    marginHorizontal: 20,
-                    marginHorizontal: 20,
-                    backgroundColor: index % 2 == 1 ? '#606060' : '#909090',
-                    padding: 20,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <View>
-                    <Text style={{color: '#fff'}}>{item.nome}</Text>
-                    <Text style={{color: '#fff'}}>{item.dataEntrada}</Text>
-                  </View>
-                  <Text style={{color: '#fff', alignSelf: "center"}}>Cadastra saida</Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+              {fila.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index.toString()}
+                    onPress={() => handleSaida(item)}
+                    style={{
+                      marginHorizontal: 20,
+                      marginHorizontal: 20,
+                      backgroundColor: index % 2 == 1 ? '#606060' : '#909090',
+                      padding: 20,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <View>
+                      <Text style={{color: '#fff'}}>{item.identificador}</Text>
+                      <Text style={{color: '#fff'}}>{item.data_entrada}</Text>
+                    </View>
+                    <Text style={{color: '#fff', alignSelf: 'center'}}>
+                      Cadastra saida
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          )}
         </View>
         <CadastrarEntrada
           visible={modalRegister}
           setVisible={handleModalState}
+          carregandoTela={carregandoTela}
         />
       </ScrollView>
     </Background>
