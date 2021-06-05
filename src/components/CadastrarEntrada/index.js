@@ -71,6 +71,8 @@ export default CadastrarEntrada = ({visible, setVisible, carregandoTela}) => {
       carregandoTela();
     }
   };
+
+  const validaLImite = () => {};
   return (
     <Modal transparent={true} visible={visible} animationType="slide">
       <View style={style.Container}>
