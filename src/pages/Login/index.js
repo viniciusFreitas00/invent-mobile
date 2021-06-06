@@ -7,6 +7,7 @@ import api from '../../services/api';
 import style from './style';
 import InputLogin from '../../components/InputLogin';
 import Background from '../../components/Background';
+import image from '../../assets/imgs/logo_descansado.png'
 
 export default Login = () => {
   const [user, setUser] = useState('vinicius.freitas');
@@ -55,9 +56,13 @@ export default Login = () => {
   return (
     <Background>
       <View style={style.Container}>
-        <Text style={{color: '#808080', textAlign: 'center', fontSize: 30}}>
-          INVENT
-        </Text>
+        <View style = {{flexDirection: 'row' ,justifyContent: 'center', alignItems: 'center'}}>
+          <Image source = {image}/>
+          <Text style={{color: '#808080', textAlign: 'center', fontSize: 30}}>
+            INVENT
+          </Text>
+        </View>
+
         <View style style={{padding: 50}}>
           <InputLogin iconName={'user'} onChangeText={setUser} />
           <InputLogin
