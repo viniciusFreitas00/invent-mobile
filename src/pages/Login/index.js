@@ -9,8 +9,8 @@ import InputLogin from '../../components/InputLogin';
 import Background from '../../components/Background';
 
 export default Login = () => {
-  const [user, setUser] = useState('vinicius.freitas');
-  const [password, setPassword] = useState('123456');
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   // const logado = useSelector(state => state.user);
 
