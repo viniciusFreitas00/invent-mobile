@@ -20,7 +20,6 @@ export default CadastrarEntrada = ({visible, setVisible, carregandoTela}) => {
   useEffect(() => setIdentificador(''), [visible]);
 
   const handleCadastraEntrada = () => {
-    console.log(identificador);
     if (identificador.length < 7) {
       dispatch({
         type: 'ERROR_MODAL',

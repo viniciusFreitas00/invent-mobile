@@ -15,7 +15,7 @@ export default Login = () => {
   // const logado = useSelector(state => state.user);
 
   const handleLogin = async () => {
-    dispatch({type: 'LOADING_MODAL', payload: true});
+    // dispatch({type: 'LOADING_MODAL', payload: true});
 
     await api
       .post('/login', {
@@ -23,34 +23,33 @@ export default Login = () => {
         senha: password,
       })
       .then(response => {
-        handleLoginResponse(response.data.user);
+        const {user} = response.data;
+        if (user) {
+          handleLoginResponse(user);
+        } else {
+          dispatch({type: 'LOADING_MODAL', payload: false});
+          dispatch({
+            type: 'ERROR_MODAL',
+            payload: {show: true, message: 'Usuário ou senha inválidas.'},
+          });
+        }
       })
       .catch(error => {
         Alert.alert('Erro', error.message);
       });
-
-    // console.log(logado);
   };
 
   const handleLoginResponse = ({login, senha, nome, nivel_de_acesso}) => {
-    if (login) {
-      dispatch({type: 'LOADING_MODAL', payload: false});
-      dispatch({
-        type: 'LOGIN',
-        payload: {
-          login: login,
-          senha: senha,
-          nome: nome,
-          nivel_de_acesso: nivel_de_acesso,
-        },
-      });
-    } else {
-      dispatch({type: 'LOADING_MODAL', payload: false});
-      dispatch({
-        type: 'ERROR_MODAL',
-        payload: {show: true, message: 'Usuário ou senha inválidas.'},
-      });
-    }
+    dispatch({type: 'LOADING_MODAL', payload: false});
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        login: login,
+        senha: senha,
+        nome: nome,
+        nivel_de_acesso: nivel_de_acesso,
+      },
+    });
   };
 
   return (
