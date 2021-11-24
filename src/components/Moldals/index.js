@@ -1,15 +1,15 @@
 import React from 'react';
 
-import Error from './Error';
+import Erro from './Erro';
 import Loading from './Loading';
 import Success from './Success';
 
-export default Modal = () => {
+export default function Modal() {
   return (
     <>
-      <Error />
+      <Erro />
       <Loading />
       <Success />
     </>
   );
-};
+}

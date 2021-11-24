@@ -5,17 +5,13 @@ import Login from '../pages/Login';
 import Home from '../pages/Home';
 import Modals from '../components/Moldals';
 
-export default Rotas = ({children}) => {
+export default function Rotas({children}) {
   const {login} = useSelector(state => state.user);
-
-  // useEffect(() => {
-  //   console.log(login);
-  // });
 
   return (
     <>
-      {!!login ? <Home /> : <Login />}
+      {login ? <Home /> : <Login />}
       <Modals />
     </>
   );
-};
+}

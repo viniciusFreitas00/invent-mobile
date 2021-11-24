@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import style from './style';
 
-export default Error = () => {
+export default function Erro() {
   const error = useSelector(state => state.errorModal);
   const dispatch = useDispatch();
 
@@ -18,9 +18,11 @@ export default Error = () => {
       <View style={style.Container}>
         <View style={style.Card}>
           <View style={style.Icon}>
-            <Icon name="closecircleo" color="#fff" size={60}></Icon>
+            <Icon name="closecircleo" color="#fff" size={60} />
           </View>
-          <Text style={{color: '#fff', textAlign: "center"}}>{error.message}</Text>
+          <Text style={{color: '#fff', textAlign: 'center'}}>
+            {error.message}
+          </Text>
           <TouchableOpacity style={style.Button} onPress={close}>
             <Text style={{color: '#fff'}}>OK</Text>
           </TouchableOpacity>
@@ -28,4 +30,4 @@ export default Error = () => {
       </View>
     </Modal>
   );
-};
+}
